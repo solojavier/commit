@@ -12,12 +12,12 @@
 </head>
 <body>
 
-  <form action="">
+  <form action="/commitment/{{.user}}" method="POST">
     <label>¿A que te comprometes?</label>
-    <input type="text" placeholder =" Meta / proyecto / accion ">
+    <input type="text" name="description" placeholder =" Meta / proyecto / accion ">
 
     <label>¿Para cuando?</label>
-    <input type="date">
+    <input type="date" name="date">
 
     <input class="bottom" type="submit" value="Yo me comprometo">
   </form>
