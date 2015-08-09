@@ -4,7 +4,7 @@
 
 module:testrunner
 
-GET     /                                       App.Index
+GET     /:user                                  App.Index
 POST    /commitment/:user                       Commitment.Create
 GET     /commitment/:user                       Commitment.Get
 
