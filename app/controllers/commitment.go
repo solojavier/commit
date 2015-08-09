@@ -33,16 +33,31 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	return c.RenderJson(commit)
 }
 
-func (c Commitment) Get(user string) revel.Result {
-	result := Commit{}
+func (c Commitment) Update(user string, description string, status string) revel.Result {
+	c.Validation.Required(user)
+	c.Validation.Required(description)
+	c.Validation.Required(status)
 
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
-	err := collection(session).Find(bson.M{"user": user, "status": "expired"}).One(&result)
+	err := collection(session).Update(bson.M{"user": user, "description": description}, bson.M{"$set": bson.M{"status": status}})
 	if err != nil {
-		return c.NotFound("No expired commitments")
+		panic(err)
 	}
-	defer session.Close()
 
+	defer session.Close()
+	return c.RenderJson("ok")
+}
+
+func (c Commitment) Get(user string) revel.Result {
+	result := Commit{}
+	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
+	err := collection(session).Find(bson.M{"user": user, "status": "created"}).One(&result)
+
+	if err != nil {
+		return c.NotFound("No current commitments")
+	}
+
+	defer session.Close()
 	return c.RenderJson(result)
 }
 
