@@ -70,5 +70,5 @@ func parseDate(date string) time.Time {
 
 func collection(session *mgo.Session) *mgo.Collection {
 	// TODO: Add error handling
-	return session.DB("commit").C("heroku_jl9vx3v3")
+	return session.DB("heroku_jl9vx3v3").C("commitments")
 }
