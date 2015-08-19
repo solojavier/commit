@@ -7,23 +7,23 @@
   <link rel="stylesheet" type="text/css" href="/public/css/commit.css">
   <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<style>
-  </style>
+  <script src="/public/js/jquery-1.9.1.min.js"></script>
+  <script src="/public/js/app.js"></script>
 </head>
 <body>
 
-  <form action="/commitment/{{.user}}" method="POST">
+  <form id="create-form">
+    <input id="user" type="hidden" value="{{.user}}">
     <label>¿A que te comprometes?</label>
-    <input type="text" name="description" placeholder =" Meta / proyecto / accion ">
+    <input type="text" name="description" placeholder =" Meta / proyecto / accion " required>
 
     <label>¿Para cuando?</label>
-    <input type="date" name="date">
+    <input type="date" name="date" required>
 
-    <input class="bottom" type="submit" value="Yo me comprometo">
+    <input id="create-button" class="bottom" type="submit" value="Yo me comprometo">
   </form>
 
-
-  <form action="">
+  <form id="show-form">
 
     <label>Te comprometiste a:</label>
     <label class='actived'>  Meta / proyecto / accion </label>
@@ -35,8 +35,8 @@
 
     <progress value="1" max="10" ></progress>
 
-    <input type="submit" class="bottom si"  name="Lo cumpli" value="Si lo cumplí">
-    <input type="submit" class="bottom no"  name="No lo cumpli" value="No lo cumplí">
+    <input id="complete-button" type="submit" class="bottom si"  name="Lo cumpli" value="Si lo cumplí">
+    <input id="discard-button" type="submit" class="bottom no"  name="No lo cumpli" value="No lo cumplí">
   </form>
 
 </body>

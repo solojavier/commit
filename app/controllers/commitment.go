@@ -13,10 +13,11 @@ type Commitment struct {
 }
 
 type Commit struct {
-	User        string
-	Date        time.Time
-	Description string
-	Status      string
+	Id          bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	User        string        `json:"user"`
+	Date        time.Time     `json:"date"`
+	Description string        `json:"description"`
+	Status      string        `json:"status"`
 }
 
 func (c Commitment) Create(user string, description string, date string) revel.Result {
@@ -24,7 +25,7 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	c.Validation.Required(description)
 	c.Validation.Required(date)
 
-	commit := Commit{user, parseDate(date), description, "created"}
+	commit := Commit{bson.NewObjectId(), user, parseDate(date), description, "created"}
 
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	collection(session).Insert(&commit)
@@ -33,13 +34,13 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	return c.RenderJson(commit)
 }
 
-func (c Commitment) Update(user string, description string, status string) revel.Result {
+func (c Commitment) Update(user string, status string, id string) revel.Result {
 	c.Validation.Required(user)
-	c.Validation.Required(description)
+	c.Validation.Required(id)
 	c.Validation.Required(status)
 
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
-	err := collection(session).Update(bson.M{"user": user, "description": description}, bson.M{"$set": bson.M{"status": status}})
+	err := collection(session).Update(bson.M{"_id": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"status": status}})
 	if err != nil {
 		panic(err)
 	}

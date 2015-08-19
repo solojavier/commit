@@ -37,14 +37,14 @@ func (_ tCommitment) Create(
 
 func (_ tCommitment) Update(
 		user string,
-		description string,
 		status string,
+		id string,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "user", user)
-	revel.Unbind(args, "description", description)
 	revel.Unbind(args, "status", status)
+	revel.Unbind(args, "id", id)
 	return revel.MainRouter.Reverse("Commitment.Update", args).Url
 }
 
