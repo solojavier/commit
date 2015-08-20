@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -31,8 +30,6 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	collection(session).Insert(&commit)
 	defer session.Close()
-
-	fmt.Println(commit)
 
 	return c.RenderJson(commit)
 }

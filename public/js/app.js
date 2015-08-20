@@ -9,7 +9,6 @@ $( document ).ready(function() {
     date        = $('input[name=date]').val();
     form = { description: description, date: date };
     $.post("/commitment/" + Commit.user, form, function(data) {
-      console.log(form);
       retrieveCommit();
     });
   });
