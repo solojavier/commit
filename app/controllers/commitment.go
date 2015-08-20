@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -16,7 +15,7 @@ type Commitment struct {
 type Commit struct {
 	Id          bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	User        string        `json:"user"`
-	Date        string        `json:"date"`
+	Date        time.Time     `json:"date"`
 	Description string        `json:"description"`
 	Status      string        `json:"status"`
 }
@@ -26,9 +25,7 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	c.Validation.Required(description)
 	c.Validation.Required(date)
 
-	commit := Commit{bson.NewObjectId(), user, date, description, "created"}
-	fmt.Println("----", commit)
-
+	commit := Commit{bson.NewObjectId(), user, parseDate(date), description, "created"}
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	collection(session).Insert(&commit)
 	defer session.Close()
@@ -65,8 +62,7 @@ func (c Commitment) Get(user string) revel.Result {
 }
 
 func parseDate(date string) time.Time {
-	const shortForm = "2006-01-15"
-	parsedDate, _ := time.Parse(shortForm, date)
+	parsedDate, _ := time.Parse(time.RFC3339, date)
 	return parsedDate
 }
 
