@@ -6,9 +6,11 @@ $( document ).ready(function() {
   $("#create-button").click(function(event) {
     event.preventDefault();
     description = $('input[name=description]').val();
-    date        = $('input[name=date]').val();
+    date        = $('input[name=date]').val(); //parse date
     form = { description: description, date: date };
     $.post("/commitment/" + Commit.user, form, function(data) {
+      data.date = date;
+      console.log(data)
       retrieveCommit();
     });
   });
@@ -38,8 +40,9 @@ var retrieveCommit = function() {
   $.get("/commitment/" + Commit.user, function(data) {
     $("#create-form").hide();
     Commit.id = data.id;
+    console.log(data);
 
-    var aux = data.date.split("-");
+    var aux = data.date.split("-"); 
     var year = aux[0];
     var month = aux[1];
     var day = aux[2];
