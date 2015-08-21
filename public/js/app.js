@@ -35,28 +35,23 @@ $( document ).ready(function() {
 var Commit = {};
 
 var retrieveCommit = function() {
-
   $.get("/commitment/" + Commit.user, function(data) {
     $("#create-form").hide();
     Commit.id = data.id;
 
-    var aux = data.date.split("-");
-    var year = aux[0];
-    var month = aux[1];
-    var day = aux[2];
-
-    $( "#day" ).text( day );
-    $( "#month" ).text( month );
-    $( "#year" ).text( year );
+    var date = new Date(data.date);
+    $( "#day" ).text( date.getDate() );
+    $( "#month" ).text( ("0" + (date.getMonth() + 1)).slice(-2) );
+    $( "#year" ).text( date.getFullYear() );
     $( "#description" ).text( data.description );
-
     $("#show-form").show();
+
   }).fail(function() {
     $("#create-form").show();
     $("#show-form").hide();
   });
-
 };
+
 
 $.put = function(url, data, callback, type){
   if ( $.isFunction(data) ){
