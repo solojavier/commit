@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -28,7 +27,6 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	c.Validation.Required(date)
 
 	_, week := parseDate(date).ISOWeek() //calculate week
-	fmt.Println("Create:: la semana es", week)
 	commit := Commit{bson.NewObjectId(), user, parseDate(date), week, description, "created"}
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	collection(session).Insert(&commit)
@@ -66,13 +64,10 @@ func (c Commitment) Get(user string) revel.Result {
 
 func (c Commitment) Percent(user string) revel.Result {
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
-	max, _ := collection(session).Find(bson.M{"user": user}).Count()
-	//val, _ := collection(session).Find(bson.M{"user": user, "status": bson.M{"$ne": "created"}}).Count()
-
 	_, week := time.Now().ISOWeek()
+	max, _ := collection(session).Find(bson.M{"user": user}).Count()
 	p, _ := collection(session).Find(bson.M{"user": user, "status": "completed", "week": week}).Count()
 
-	fmt.Println("la semana es", week)
 	//if err != nil {
 	result := map[string]int{"max": max, "p": p}
 	fmt.Println("has cumplido ", result)
