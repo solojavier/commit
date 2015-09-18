@@ -5,8 +5,8 @@
 module:testrunner
 
 GET     /:user                                  App.Index
-
 GET     /commitment/:user                       Commitment.Get
+GET     /commitment/:user/percent               Commitment.Percent
 POST    /commitment/:user                       Commitment.Create
 PUT     /commitment/:user                       Commitment.Update
 

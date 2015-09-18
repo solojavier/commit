@@ -2,6 +2,7 @@ $( document ).ready(function() {
 
   Commit.user = $("#user").val();
   retrieveCommit();
+  retrieveP();
 
   $("#create-button").click(function(event) {
     event.preventDefault();
@@ -11,6 +12,7 @@ $( document ).ready(function() {
     $.post("/commitment/" + Commit.user, form, function(data) {
       data.date = date;
       retrieveCommit();
+      retrieveP();
     });
   });
 
@@ -50,6 +52,19 @@ var retrieveCommit = function() {
     $("#create-form").show();
     $("#show-form").hide();
   });
+
+};
+
+var retrieveP = function() {
+   $.get("/commitment/" + Commit.user + "/percent", function(data) {
+    $("#label").text("Esta semana solo has cumplido " + data.p + " proyecto(s) de " + data.max);
+
+    $("progress").attr('value', data.p );;
+    $("progress").attr('max',  data.max);;
+  }).fail(function() {
+    console.log("retrieveP ")
+  });
+
 };
 
 

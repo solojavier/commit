@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -16,6 +17,7 @@ type Commit struct {
 	Id          bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	User        string        `json:"user"`
 	Date        time.Time     `json:"date"`
+	Week        int           `json:"week"`
 	Description string        `json:"description"`
 	Status      string        `json:"status"`
 }
@@ -25,7 +27,9 @@ func (c Commitment) Create(user string, description string, date string) revel.R
 	c.Validation.Required(description)
 	c.Validation.Required(date)
 
-	commit := Commit{bson.NewObjectId(), user, parseDate(date), description, "created"}
+	_, week := parseDate(date).ISOWeek() //calculate week
+	fmt.Println("Create:: la semana es", week)
+	commit := Commit{bson.NewObjectId(), user, parseDate(date), week, description, "created"}
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	collection(session).Insert(&commit)
 	defer session.Close()
@@ -52,10 +56,27 @@ func (c Commitment) Get(user string) revel.Result {
 	result := Commit{}
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	err := collection(session).Find(bson.M{"user": user, "status": "created"}).One(&result)
-
 	if err != nil {
 		return c.NotFound("No current commitments")
 	}
+
+	defer session.Close()
+	return c.RenderJson(result)
+}
+
+func (c Commitment) Percent(user string) revel.Result {
+	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
+	max, _ := collection(session).Find(bson.M{"user": user}).Count()
+	//val, _ := collection(session).Find(bson.M{"user": user, "status": bson.M{"$ne": "created"}}).Count()
+
+	_, week := time.Now().ISOWeek()
+	p, _ := collection(session).Find(bson.M{"user": user, "status": "completed", "week": week}).Count()
+
+	fmt.Println("la semana es", week)
+	//if err != nil {
+	result := map[string]int{"max": max, "p": p}
+	fmt.Println("has cumplido ", result)
+	//}
 
 	defer session.Close()
 	return c.RenderJson(result)

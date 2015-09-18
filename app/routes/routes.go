@@ -57,6 +57,15 @@ func (_ tCommitment) Get(
 	return revel.MainRouter.Reverse("Commitment.Get", args).Url
 }
 
+func (_ tCommitment) Percent(
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Commitment.Percent", args).Url
+}
+
 
 type tStatic struct {}
 var Static tStatic
