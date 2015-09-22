@@ -4,20 +4,6 @@ package routes
 import "github.com/revel/revel"
 
 
-type tApp struct {}
-var App tApp
-
-
-func (_ tApp) Index(
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-
 type tCommitment struct {}
 var Commitment tCommitment
 
@@ -64,6 +50,20 @@ func (_ tCommitment) Percent(
 	
 	revel.Unbind(args, "user", user)
 	return revel.MainRouter.Reverse("Commitment.Percent", args).Url
+}
+
+
+type tApp struct {}
+var App tApp
+
+
+func (_ tApp) Index(
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("App.Index", args).Url
 }
 
 

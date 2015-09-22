@@ -1,7 +1,7 @@
 $( document ).ready(function() {
-
   Commit.user = $("#user").val();
   retrieveCommit();
+  retrieveP();
 
   $("#create-button").click(function(event) {
     event.preventDefault();
@@ -11,6 +11,7 @@ $( document ).ready(function() {
     $.post("/commitment/" + Commit.user, form, function(data) {
       data.date = date;
       retrieveCommit();
+      retrieveP();
     });
   });
 
@@ -19,6 +20,7 @@ $( document ).ready(function() {
     form = { id: Commit.id, status: "completed" };
     $.put("/commitment/" + Commit.user, form, function(data) {
       retrieveCommit();
+      retrieveP();
     });
   });
 
@@ -26,6 +28,7 @@ $( document ).ready(function() {
     event.preventDefault();
     form = { id: Commit.id, status: "discarded" };
     $.put("/commitment/" + Commit.user, form, function(data) {
+      retrieveP();
       retrieveCommit();
     });
   });
@@ -47,17 +50,16 @@ var retrieveCommit = function() {
     $("#show-form").show();
 
   }).fail(function() {
-    retrieveP();
     $("#show-form").hide();
     $("#create-form").show();
     $("#create-form")[0].reset();
-    
+
   });
 };
 
 var retrieveP = function() {
    $.get("/commitment/" + Commit.user + "/percent", function(data) {
-    $("#label").text("Solo has cumplido " + data.porciento + "% proyecto(s) de tu 100% (" + data.p + " de " + data.max +").");
+    $("#label").text(" Tu % de cumplimiento es de " + data.porciento + "% (" + data.p + " de " + data.max +" compromiso cumplidos).");
 
     $("progress").attr('value', data.porciento );
     //$("progress").attr('max',  100);

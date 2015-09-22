@@ -22,7 +22,7 @@ input[type=submit]{
   cursor: pointer;
   font-family: 'Open Sans';
   font-weight: 200;
-  font-size: 26px;
+  font-size: 20px;
   opacity: 0.8;
   color: #fff;
   -webkit-transition: all .5s ease; -moz-transition: all .5s ease; -ms-transition: all .5s ease; transition: all .5s ease;

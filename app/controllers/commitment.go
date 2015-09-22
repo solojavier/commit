@@ -68,7 +68,11 @@ func (c Commitment) Percent(user string) revel.Result {
 	max, _ := collection(session).Find(bson.M{"user": user}).Count()
 	p, _ := collection(session).Find(bson.M{"user": user, "status": "completed"}).Count()
 
-	porciento := (p * 100) / max
+	porciento := 0
+	if p > 0 {
+		porciento = (p * 100) / max
+	}
+
 	result := map[string]int{"max": max, "p": p, "porciento": porciento}
 
 	defer session.Close()
