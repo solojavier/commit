@@ -64,11 +64,12 @@ func (c Commitment) Get(user string) revel.Result {
 
 func (c Commitment) Percent(user string) revel.Result {
 	session, _ := mgo.Dial(os.Getenv("MONGOLAB_URI"))
-	_, week := time.Now().ISOWeek()
-	max, _ := collection(session).Find(bson.M{"user": user, "week": week}).Count()
-	p, _ := collection(session).Find(bson.M{"user": user, "status": "completed", "week": week}).Count()
+	//_, week := time.Now().ISOWeek()
+	max, _ := collection(session).Find(bson.M{"user": user}).Count()
+	p, _ := collection(session).Find(bson.M{"user": user, "status": "completed"}).Count()
 
-	result := map[string]int{"max": max, "p": p}
+	porciento := (p * 100) / max
+	result := map[string]int{"max": max, "p": p, "porciento": porciento}
 
 	defer session.Close()
 	return c.RenderJson(result)

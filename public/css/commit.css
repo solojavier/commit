@@ -1,5 +1,6 @@
-body{ background: #FAFAFA; padding: 100px;  margin: auto}
-form{ margin: auto; width:800px; height: 680px; }
+body{ background: #FAFAFA; padding: 60px;  margin: auto}
+form{ margin: auto; width:800px; height: 600px; }
+#none{ height: 80px}
 label{ font-family: 'Open Sans', sans-serif; font-size: 30px; font-weight: 400; display: block; margin: 40px auto; }
 
 input[type=text], input[type=date]{
@@ -33,7 +34,7 @@ input[type=submit]:hover{ opacity: 1; }
 .date{ float: left; margin:0px 20px 0 0; width: 90px; height: 20px; text-align: center; padding-top: 7px; }
 .fin { margin-right: 200px; }
 
-progress[value] { -webkit-appearance: none; appearance: none; width: 100%; margin:0 0 50px 0; height: 30px; border: 1px solid #ddd; }
+progress[value] { -webkit-appearance: none; appearance: none; width: 70%; margin:10px 0 0px 0; height: 30px; border: 1px solid #ddd; }
 progress[value]::-webkit-progress-bar{ background: #fff; }
 progress[value]::-webkit-progress-value{  background: #FA5858; }
 

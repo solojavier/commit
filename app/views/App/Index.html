@@ -11,7 +11,12 @@
   <script src="/public/js/app.js"></script>
 </head>
 <body>
+  
 
+  <form action="#" id="none">
+    <label for="progress" id="label"></label>
+    <progress max="100"  ></progress>
+  </form>
   <form id="create-form">
     <input id="user" type="hidden" value="{{.user}}">
     <label>¿A que te comprometes?</label>
@@ -24,8 +29,6 @@
   </form>
 
   <form id="show-form">
-    <label for="progress" id="label"></label>
-    <progress  ></progress>
     
     <label>Dijiste que te comprometías a:</label>
     <label class='actived' id="description">  Meta / proyecto / accion </label>
